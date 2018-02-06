@@ -1,0 +1,329 @@
+Node-RED Flow
+
+[
+    {
+        "id": "f7bfca67.cb7628",
+        "type": "microphone",
+        "z": "57c2aa1a.5df074",
+        "name": "Record Input",
+        "x": 134,
+        "y": 197,
+        "wires": [
+            [
+                "54752cab.e99484"
+            ]
+        ]
+    },
+    {
+        "id": "62efa279.473e5c",
+        "type": "change",
+        "z": "57c2aa1a.5df074",
+        "name": "Change payload to text",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "transcription",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "text",
+                "pt": "msg",
+                "to": "transcription",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 197,
+        "wires": [
+            [
+                "62a246dc.3a82e8"
+            ]
+        ]
+    },
+    {
+        "id": "54752cab.e99484",
+        "type": "watson-speech-to-text",
+        "z": "57c2aa1a.5df074",
+        "name": "awesomelab-stt",
+        "alternatives": 1,
+        "speakerlabels": false,
+        "smartformatting": false,
+        "lang": "en-US",
+        "langhidden": "en-US",
+        "langcustom": "NoCustomisationSetting",
+        "langcustomhidden": "",
+        "band": "NarrowbandModel",
+        "bandhidden": "",
+        "password": "bgyubW8QDy57",
+        "payload-response": true,
+        "default-endpoint": true,
+        "service-endpoint": "https://stream.watsonplatform.net/speech-to-text/api",
+        "x": 321,
+        "y": 197,
+        "wires": [
+            [
+                "62efa279.473e5c"
+            ]
+        ]
+    },
+    {
+        "id": "62a246dc.3a82e8",
+        "type": "switch",
+        "z": "57c2aa1a.5df074",
+        "name": "Check Speech to Text",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            },
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 789,
+        "y": 179,
+        "wires": [
+            [
+                "a0ef46e2.d947b8"
+            ],
+            [
+                "ff9eae89.b78f2"
+            ]
+        ]
+    },
+    {
+        "id": "a0ef46e2.d947b8",
+        "type": "debug",
+        "z": "57c2aa1a.5df074",
+        "name": "Show Question",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 1007,
+        "y": 172,
+        "wires": []
+    },
+    {
+        "id": "ff9eae89.b78f2",
+        "type": "watson-conversation-v1",
+        "z": "57c2aa1a.5df074",
+        "name": "awesomelab WCS",
+        "workspaceid": "f0197b97-f563-4426-9b49-6ff34cef6fba",
+        "multiuser": false,
+        "context": true,
+        "empty-payload": false,
+        "default-endpoint": true,
+        "service-endpoint": "https://gateway.watsonplatform.net/conversation/api",
+        "x": 135,
+        "y": 284,
+        "wires": [
+            [
+                "9222f9a0.0cc6a8"
+            ]
+        ]
+    },
+    {
+        "id": "9222f9a0.0cc6a8",
+        "type": "switch",
+        "z": "57c2aa1a.5df074",
+        "name": "Check Chat Payload",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 366,
+        "y": 284,
+        "wires": [
+            [
+                "1c9b1727.658f99",
+                "501f27d9.9c4de8"
+            ]
+        ]
+    },
+    {
+        "id": "1c9b1727.658f99",
+        "type": "debug",
+        "z": "57c2aa1a.5df074",
+        "name": "Show JSON",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 571,
+        "y": 264,
+        "wires": []
+    },
+    {
+        "id": "942f1209.8e13d",
+        "type": "watson-text-to-speech",
+        "z": "57c2aa1a.5df074",
+        "name": "TTS",
+        "lang": "en-US",
+        "langhidden": "en-US",
+        "langcustom": "NoCustomisationSetting",
+        "langcustomhidden": "",
+        "voice": "en-US_AllisonVoice",
+        "voicehidden": "en-US_AllisonVoice",
+        "format": "audio/mp3",
+        "password": "EWNFaOPmoIpA",
+        "payload-response": true,
+        "default-endpoint": true,
+        "service-endpoint": "https://stream.watsonplatform.net/text-to-speech/api",
+        "x": 437,
+        "y": 392,
+        "wires": [
+            [
+                "99bdf9bd.5737d8"
+            ]
+        ]
+    },
+    {
+        "id": "99bdf9bd.5737d8",
+        "type": "change",
+        "z": "57c2aa1a.5df074",
+        "name": "Set Reply for Playback",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "speech",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 642,
+        "y": 391,
+        "wires": [
+            [
+                "6ffcc951.c903f8"
+            ]
+        ]
+    },
+    {
+        "id": "6ffcc951.c903f8",
+        "type": "play audio",
+        "z": "57c2aa1a.5df074",
+        "name": "Reply",
+        "voice": "0",
+        "x": 852,
+        "y": 392,
+        "wires": []
+    },
+    {
+        "id": "501f27d9.9c4de8",
+        "type": "change",
+        "z": "57c2aa1a.5df074",
+        "name": "Get Chat Reply",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.output.text[0]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 585,
+        "y": 299,
+        "wires": [
+            [
+                "942f1209.8e13d",
+                "d1f24264.7ad26"
+            ]
+        ]
+    },
+    {
+        "id": "d1f24264.7ad26",
+        "type": "debug",
+        "z": "57c2aa1a.5df074",
+        "name": "Show Reply",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 780,
+        "y": 299,
+        "wires": []
+    },
+    {
+        "id": "35af08.740080f8",
+        "type": "inject",
+        "z": "57c2aa1a.5df074",
+        "name": "Greeting",
+        "topic": "",
+        "payload": "Hello, Watson",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 508,
+        "y": 48,
+        "wires": [
+            [
+                "62a246dc.3a82e8"
+            ]
+        ]
+    },
+    {
+        "id": "fcbdf06a.c616",
+        "type": "inject",
+        "z": "57c2aa1a.5df074",
+        "name": "Question",
+        "topic": "",
+        "payload": "What time is my flight today?",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 509,
+        "y": 85,
+        "wires": [
+            [
+                "62a246dc.3a82e8"
+            ]
+        ]
+    },
+    {
+        "id": "7f0760fc.b57d2",
+        "type": "inject",
+        "z": "57c2aa1a.5df074",
+        "name": "Goodbye",
+        "topic": "",
+        "payload": "Goodbye",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 509,
+        "y": 123,
+        "wires": [
+            [
+                "62a246dc.3a82e8"
+            ]
+        ]
+    }
+]
